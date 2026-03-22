@@ -1,0 +1,1 @@
+"torch\ntransformers\ndatasets\nrouge-score\ntqdm\ngradio" 
