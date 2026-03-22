@@ -1,0 +1,22 @@
+name: Sync to Hugging Face
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Upload to Hugging Face Space
+        run: |
+          git config --global user.email "vinodshukla1608@gmail.com"
+          git config --global user.name "vinodshukla"
+          git remote add hf https://huggingface.co/spaces/vinodshukla/text-summarizer-research
+          git push hf main --force
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
