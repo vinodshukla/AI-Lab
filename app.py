@@ -4,33 +4,35 @@ from transformers import T5ForConditionalGeneration, T5Tokenizer
 import torch
 
 # --- Configuration ---
-# 1. Your specific repository details from the YAML
+# This folder must be in your GitHub repo for the Space to see it
 LOCAL_MODEL_PATH = "./summarizer_model" 
-# Use your username and a model repo name (e.g., same as space or a separate model repo)
-HF_MODEL_REPO = "vinodshukla1608/text-summarizer-research" 
+# Fallback to a public model if your local folder is missing or too large to push
+HF_FALLBACK_MODEL = "t5-small" 
 
-# 2. Detect Environment
+# 1. Environment Detection
 IS_SPACES = "SPACE_ID" in os.environ
 
-if IS_SPACES:
-    # On Hugging Face, it will pull from the Hub
-    model_source = HF_MODEL_REPO
+# 2. Model Source Logic
+if os.path.exists(LOCAL_MODEL_PATH):
+    model_source = LOCAL_MODEL_PATH
+    print(f"Loading model from local folder: {model_source}")
 else:
-    # Locally, it prioritizes your local folder if it exists
-    if os.path.exists(LOCAL_MODEL_PATH):
-        model_source = LOCAL_MODEL_PATH
-    else:
-        model_source = HF_MODEL_REPO
+    model_source = HF_FALLBACK_MODEL
+    print(f"Local folder not found. Falling back to Hub: {model_source}")
 
 # --- Load Model & Tokenizer ---
+# legacy=False avoids SentencePiece errors in different environments
 tokenizer = T5Tokenizer.from_pretrained(model_source, legacy=False)
 model = T5ForConditionalGeneration.from_pretrained(model_source)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
+# --- Inference Logic ---
 def summarize(text, max_len, min_len, beam_size):
-    inputs = tokenizer("summarize: " + text, return_tensors="pt", max_length=512, truncation=True).to(device)
+    input_text = "summarize: " + text
+    inputs = tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True).to(device)
+    
     summary_ids = model.generate(
         inputs["input_ids"],
         max_length=int(max_len),
@@ -44,7 +46,7 @@ def summarize(text, max_len, min_len, beam_size):
 demo = gr.Interface(
     fn=summarize,
     inputs=[
-        gr.Textbox(label="Article", placeholder="Paste text..."),
+        gr.Textbox(label="Article", placeholder="Paste text here...", lines=5),
         gr.Slider(20, 200, value=80, step=5, label="Max Length"),
         gr.Slider(10, 100, value=20, step=5, label="Min Length"),
         gr.Slider(1, 10, value=4, step=1, label="Beam Size")
@@ -53,8 +55,11 @@ demo = gr.Interface(
     title="Summarizer Demo"
 )
 
+# --- Compatibility Layer ---
 def launch_app():
-    demo.launch(inline=True, server_port=7860)
+    """Function for Jupyter Notebook compatibility"""
+    demo.launch()
 
 if __name__ == "__main__":
-    demo.launch()
+    # This runs automatically on Hugging Face Spaces
+    launch_app()
