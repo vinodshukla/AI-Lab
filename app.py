@@ -57,9 +57,13 @@ demo = gr.Interface(
 
 # --- Compatibility Layer ---
 def launch_app():
-    """Function for Jupyter Notebook compatibility"""
-    demo.launch()
+    """
+    Universal launch function.
+    server_name="0.0.0.0" allows access from outside Docker.
+    server_port=7860 is the standard port for Gradio/Hugging Face.
+    """
+    demo.launch(server_name="0.0.0.0", server_port=7860)
 
 if __name__ == "__main__":
-    # This runs automatically on Hugging Face Spaces
+    # This runs automatically on Hugging Face Spaces and Docker
     launch_app()
