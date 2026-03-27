@@ -41,7 +41,7 @@ demo = gr.Interface(
     fn=summarize,
     inputs=[gr.Textbox(lines=5), gr.Slider(20, 200, 80), gr.Slider(10, 100, 20), gr.Slider(1, 10, 4)],
     outputs="text",
-    title="AI-Lab Summarizer"
+    title="AI-Lab"
 )
 
 # --- 5. THE MISSING FUNCTION ---
