@@ -9,14 +9,16 @@ import dagshub
 
 
 def init_tracking():
-    # Force DagsHub to use your Hugging Face Secrets
+    # Force DagsHub to use your 1-year token from HF Secrets
     if "MLFLOW_TRACKING_PASSWORD" in os.environ:
+        # DagsHub looks for this specific variable name
         os.environ["DAGSHUB_USER_TOKEN"] = os.environ.get("MLFLOW_TRACKING_PASSWORD")
     
     try:
-        # This will now log in SILENTLY on Hugging Face
-        dagshub.init(repo_owner='vinodshukla', repo_name='AI-Lab', mlflow=True)
-        print("✅ MLflow Tracking Active (Headless Login)")
+        # This will now login SILENTLY and skip the link!
+        dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
+        mlflow.set_experiment("AI-Lab-Summarizer")
+        print(f"✅ MLflow Tracking Active for {REPO_OWNER}")
     except Exception as e:
         print(f"⚠️ Tracking skipped: {e}")
 
