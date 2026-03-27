@@ -1,4 +1,3 @@
-markdown
 ---
 title: AI Lab
 emoji: 📚
@@ -11,11 +10,11 @@ app_file: app.py
 pinned: false
 ---
 
-# AI-Lab
-My AI-Lab project integrated with **GitHub**, **MLflow**, and **DagsHub**.
 
-## Project Features
-- **Experiment Tracking:** Integrated with MLflow and DagsHub.
-- **Interface:** Gradio-based summariser.
-- **Deployment:** Auto-sync from GitHub to Hugging Face Spaces.
+<<<<<<< HEAD
+"# AI Lab" 
+=======
+# AI-Lab
+AI-Lab
+>>>>>>>
      
