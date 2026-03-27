@@ -1,3 +1,5 @@
+--extra-index-url https://pytorch.org
+torch==2.1.2+cpu
 gradio==4.37.2
 transformers==4.39.3
 sentencepiece
