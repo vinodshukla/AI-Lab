@@ -1,29 +1,40 @@
-yaml
-
 \---
 
 title: Text Summarizer Research
+
 emoji: 📚
+
 colorFrom: blue
+
 colorTo: purple
+
 sdk: gradio
-sdk\_version: "4.44.0"
-python\_version: "3.10"
+
+sdk\_version: 4.44.0
+
+python\_version: 3.10
+
 app\_file: app.py
+
 pinned: false
----
+
+\---
 
 
 
+\# Text Summarizer Research Project
 
 
-<<<<<<< HEAD
-"# Text Summarizer Research Project"
-===
 
-# text-summarizer-research
+This project uses Hugging Face Transformers to research and implement text summarization. 
 
-text-summarizer-research
 
->>>>>>> 46b13269acf74b1f16ddecafd2ea7a4c207991c8
+
+\## Features
+
+\- Abstractive summarization using state-of-the-art models.
+
+\- Interactive UI powered by Gradio.
+
+
 
