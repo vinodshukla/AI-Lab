@@ -10,14 +10,16 @@ REPO_OWNER = "vinodshukla"
 REPO_NAME = "AI-Lab"
 
 def init_tracking():
-    try:
-        dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
-        mlflow.set_experiment("AI-Lab-Summarizer")
-        print("✅ MLflow Tracking Active")
-    except Exception as e:
-        print(f"⚠️ Tracking skipped: {e}")
-
-init_tracking()
+    token = os.getenv("DAGSHUB_TOKEN")
+    if token:
+        # This line is the magic fix to stop the login prompt
+        dagshub.auth.add_app_token(token) 
+        try:
+            dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
+            mlflow.set_experiment("AI-Lab")
+            print("✅ MLflow Tracking Active")
+        except Exception as e:
+            print(f"⚠️ Tracking skipped: {e}")
 
 # --- 2. Load Model ---
 MODEL_NAME = "./summarizer_model" if os.path.exists("./summarizer_model") else "t5-small"
