@@ -6,17 +6,24 @@ on:
       - main
 
 jobs:
-  deploy:
+  sync-to-hf:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
 
-      - name: Upload to Hugging Face Space
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # important: avoids shallow clone errors
+
+      - name: Set up Git
         run: |
           git config --global user.email "vinodshukla1608@gmail.com"
-          git config --global user.name "vinodshukla"
-          git remote add hf https://huggingface.co/spaces/vinodshukla/text-summarizer-research
-          git push hf main --force
+          git config --global user.name "vinodshukla1608"
+
+      - name: Push to Hugging Face
+        run: |
+          git remote add hf https://vinodshukla1608:${HF_TOKEN}@huggingface.co/spaces/vinodshukla1608/AI-Lab
+
+          git push hf main --force --verbose
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
