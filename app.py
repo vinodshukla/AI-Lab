@@ -5,22 +5,28 @@ import torch
 import mlflow
 import dagshub
 
-# --- 1. MLOps (Replace with your actual DagsHub username) ---
-REPO_OWNER = "vinodshukla" 
-REPO_NAME = "AI-Lab"
-
+# --- 1. PLACE THE TRACKING CODE HERE ---
 def init_tracking():
-    token = os.getenv("DAGSHUB_TOKEN")
-    if token:
-        # This line is the magic fix to stop the login prompt
-        dagshub.auth.add_app_token(token) 
+    # Get credentials from Hugging Face Secrets
+    user = os.getenv("MLFLOW_TRACKING_USERNAME")
+    password = os.getenv("MLFLOW_TRACKING_PASSWORD")
+    
+    if user and password:
+        # Set them as environment variables so MLflow sees them
+        os.environ['MLFLOW_TRACKING_USERNAME'] = user
+        os.environ['MLFLOW_TRACKING_PASSWORD'] = password
+        
         try:
-            dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
-            mlflow.set_experiment("AI-Lab")
-            print("✅ MLflow Tracking Active")
+            # bootstrap=True helps DagsHub set up everything automatically
+            dagshub.init(repo_owner="vinodshukla", repo_name="AI-Lab", bootstrap=True)
+            mlflow.set_experiment("AI-Lab-Summarizer")
+            print("✅ DagsHub & MLflow Tracking Active")
         except Exception as e:
             print(f"⚠️ Tracking skipped: {e}")
+    else:
+        print("⚠️ No credentials found. Tracking skipped to prevent hang.")
 
+init_tracking()
 # --- 2. Load Model ---
 MODEL_NAME = "./summarizer_model" if os.path.exists("./summarizer_model") else "t5-small"
 tokenizer = T5Tokenizer.from_pretrained(MODEL_NAME, legacy=False)
