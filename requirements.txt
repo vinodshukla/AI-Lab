@@ -1,6 +1,7 @@
-gradio==4.37.2
+gradio==4.38.1
 transformers==4.39.3
+torch==2.2.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 sentencepiece
 accelerate
-mlflow
-dagshub
+mlflow==2.12.1
+dagshub==0.3.24
