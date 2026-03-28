@@ -52,7 +52,7 @@ demo = gr.Interface(
         gr.Slider(1, 10, value=4, step=1, label="Beam Size")
     ],
     outputs="text",
-    title="Summarizer Demo"
+    title="AI-Lab Demo"
 )
 
 # --- Compatibility Layer ---
