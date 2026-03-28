@@ -1,10 +1,10 @@
-gradio==4.44.0
+gradio[oauth]==4.37.2
 transformers==4.39.3
 torch==2.2.0
 sentencepiece
 accelerate
 mlflow==2.12.1
-dagshub>=0.3.25
+dagshub==0.3.24
 fastapi<0.113.0
 uvicorn>=0.14.0
 websockets>=10.4
