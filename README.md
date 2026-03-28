@@ -22,19 +22,3 @@ pinned: false
 
 
 
-\# Text Summarizer Research Project
-
-
-
-This project uses Hugging Face Transformers to research and implement text summarization. 
-
-
-
-\## Features
-
-\- Abstractive summarization using state-of-the-art models.
-
-\- Interactive UI powered by Gradio.
-
-
-
